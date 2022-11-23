@@ -47,7 +47,7 @@ export async function run({ accessToken, fileKey, ids, outDir }: Options): Promi
     }
 
     const coverFilename = `${pdf.name}.jpg`
-    const pdfFilename = `${pdf.name}.png`
+    const pdfFilename = `${pdf.name}.pdf`
     const pdfFilepath = path.resolve(outDir, pdfFilename)
     const pdfBasename = path.basename(pdfFilename)
 
