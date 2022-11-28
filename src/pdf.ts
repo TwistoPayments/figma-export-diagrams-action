@@ -34,7 +34,7 @@ export const getPdfs = async ({ accessToken, fileKey, ids = [] }: Props): Promis
         const frameIds = group.children.map(frame => frame.id)
 
         const pdfResponse = await api.getImage(fileKey, {
-          ids: frameIds.join(','),
+          ids: frameIds.join(',') + group.id,
           format: 'png',
           scale: 1
         })
