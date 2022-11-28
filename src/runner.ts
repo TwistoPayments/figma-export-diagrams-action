@@ -32,6 +32,7 @@ export async function run({ accessToken, fileKey, ids, outDir }: Options): Promi
   const result: Result[] = []
 
   for (const pdf of pdfs) {
+    console.log("Pdf merger");
     const pdfMerger = new PDFMerger();
 
     const pages = await Promise.all(
@@ -42,9 +43,6 @@ export async function run({ accessToken, fileKey, ids, outDir }: Options): Promi
 
     const cover = Buffer.from(await fetch(pdf.cover).then(r => r.arrayBuffer()))
 
-    for (const page of pages) {
-      await pdfMerger.add(page)
-    }
 
     const coverFilename = `${pdf.name}.jpg`
     const pdfFilename = `${pdf.name}.pdf`
@@ -53,9 +51,19 @@ export async function run({ accessToken, fileKey, ids, outDir }: Options): Promi
 
     mkdirSync(path.dirname(pdfFilepath), { recursive: true })
 
-    core.info(pdfBasename)
+    //core.info(pdfBasename)
 
-    await pdfMerger.save(path.resolve(outDir, pdfFilename))
+    let pngFileCount = 0
+    for (const page of pages) {
+      let pngFileName = `${pdf.name}_${pngFileCount}.png`
+      console.log(pngFileName);
+      writeFileSync(path.resolve(outDir, pngFileName), page)
+      pngFileCount = pngFileCount + 1
+      // await pdfMerger.add(page)
+    }
+
+
+    // await pdfMerger.save(path.resolve(outDir, pdfFilename))
     writeFileSync(path.resolve(outDir, coverFilename), cover)
 
     result.push({

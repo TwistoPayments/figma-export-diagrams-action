@@ -32,6 +32,7 @@ const ids = jsonParse<string[]>(core.getInput('ids', { required: false }) || '[]
 
   core.startGroup('Export pdfs')
   const pdfs = await run({ accessToken, fileKey, ids, outDir })
+  console.log("End group");
   core.endGroup()
 
   mkdirSync(path.resolve(outDir), { recursive: true })
