@@ -55,7 +55,7 @@ export async function run({ accessToken, fileKey, ids, outDir }: Options): Promi
 
     let pngFileCount = 0
     for (const page of pages) {
-      let pngFileName = `${pdf.name}_${pngFileCount}.png`
+      let pngFileName = `${pdf.name}_${pngFileCount}.svg`
       console.log(pngFileName);
       writeFileSync(path.resolve(outDir, pngFileName), page)
       pngFileCount = pngFileCount + 1
