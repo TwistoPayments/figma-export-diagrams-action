@@ -4,7 +4,7 @@ import fetch from 'node-fetch'
 import path, { sep } from 'path'
 import PDFMerger from 'pdf-merger-js'
 
-import { getPdfs, Pdf } from './pdf'
+import { getFigmaExport, FigmaExport } from './export'
 
 type Options = {
   accessToken: string
@@ -23,7 +23,7 @@ type Result = {
 
 export async function run({ accessToken, fileKey, ids, outDir }: Options): Promise<Result[]> {
 
-  const pdfs = await getPdfs({
+  const pdfs = await getFigmaExport({
     accessToken,
     fileKey,
     ids,

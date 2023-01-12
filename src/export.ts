@@ -1,7 +1,7 @@
 import { Api, Node, NodeTypes } from 'figma-api'
 import { getGroups } from './figma'
 
-export type Pdf = {
+export type FigmaExport = {
   id: string
   name: string
   pages: string[],
@@ -18,7 +18,7 @@ const pagesAreOk = (pages: (string | null)[]): pages is string[] => {
   return pages.find(page => typeof page !== 'string') === undefined
 }
 
-export const getPdfs = async ({ accessToken, fileKey, ids = [] }: Props): Promise<Pdf[]> => {
+export const getFigmaExport = async ({ accessToken, fileKey, ids = [] }: Props): Promise<FigmaExport[]> => {
 
   const api = new Api({
     personalAccessToken: accessToken
