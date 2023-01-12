@@ -21,6 +21,8 @@ const pagesAreOk = (pages: (string | null)[]): pages is string[] => {
 
 export const getFigmaExport = async ({accessToken, fileKey, ids = [], exportType}: Props): Promise<FigmaExport[]> => {
 
+    console.log("Start fetching diagrams from Figma" + exportType);
+
     const api = new Api({
         personalAccessToken: accessToken
     })
