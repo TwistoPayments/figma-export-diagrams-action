@@ -32,7 +32,7 @@ export async function run({ accessToken, fileKey, ids, outDir }: Options): Promi
   const result: Result[] = []
 
   for (const pdf of pdfs) {
-    console.log("Pdf merger");
+    console.log("Start export");
     const pdfMerger = new PDFMerger();
 
     const pages = await Promise.all(
