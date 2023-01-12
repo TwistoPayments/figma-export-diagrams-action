@@ -47,7 +47,7 @@ export const getFigmaExport = async ({accessToken, fileKey, ids = [], exportType
 
                 const pdfResponse = await api.getImage(fileKey, {
                     ids: ids,
-                    format: 'png',
+                    format: exportType,
                     scale: 1
                 })
 
