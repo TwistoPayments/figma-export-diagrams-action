@@ -21,6 +21,7 @@ const jsonParse = <T>(text: string): T | false => {
 
 const accessToken = core.getInput('accessToken', { required: true })
 const fileKey = core.getInput('fileKey', { required: true })
+const exportType = core.getInput('exportType', { required: true })
 const ids = jsonParse<string[]>(core.getInput('ids', { required: false }) || '[]')
 
 ;(async function() {
@@ -30,15 +31,15 @@ const ids = jsonParse<string[]>(core.getInput('ids', { required: false }) || '[]
     return;
   }
 
-  core.startGroup('Export pdfs')
-  const pdfs = await run({ accessToken, fileKey, ids, outDir })
+  core.startGroup('Export diagrams')
+  const pdfs = await run({ accessToken, fileKey, ids, outDir , exportType})
   console.log("End group");
   core.endGroup()
 
   mkdirSync(path.resolve(outDir), { recursive: true })
 
   if (pdfs.length === 0) {
-    core.warning('No PDFs has been exported.')
+    core.warning('No Diagrams has been exported.')
   }
 
   core.setOutput('pdfs', pdfs);
