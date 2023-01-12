@@ -1,5 +1,5 @@
-name: Figma Export PDFs
-description: Figma Export PDFs
+name: Figma Export Diagrams
+description: Figma Export Diagrams
 
 inputs:
   accessToken:
@@ -11,12 +11,15 @@ inputs:
   ids:
     description: List of ids to export. Default to `all`
     required: true
+  exportType:
+    description: Type of the export PNG or PDF
+    required: true
 
 outputs:
   pdfs:
-    description: List of exported pdfs
+    description: List of exported diagrams
   outDir:
-    description: Output directory for all emitted pdf files
+    description: Output directory for all emitted diagram files
 
 runs:
   using: docker

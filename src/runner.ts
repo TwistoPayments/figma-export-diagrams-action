@@ -11,6 +11,8 @@ type Options = {
   fileKey: string
   ids: string[]
   outDir: string
+
+  exportType: string
 }
 
 type Result = {
@@ -21,7 +23,7 @@ type Result = {
   cover: string
 }
 
-export async function run({ accessToken, fileKey, ids, outDir }: Options): Promise<Result[]> {
+export async function run({ accessToken, fileKey, ids, outDir, exportType }: Options): Promise<Result[]> {
 
   const pdfs = await getFigmaExport({
     accessToken,
@@ -29,10 +31,12 @@ export async function run({ accessToken, fileKey, ids, outDir }: Options): Promi
     ids,
   })
 
+  console.log("Export type : " + exportType)
+
   const result: Result[] = []
+  console.log("Start export");
 
   for (const pdf of pdfs) {
-    console.log("Start export");
     const pdfMerger = new PDFMerger();
 
     const pages = await Promise.all(
