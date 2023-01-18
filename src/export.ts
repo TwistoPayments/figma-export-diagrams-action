@@ -21,7 +21,7 @@ const pagesAreOk = (pages: (string | null)[]): pages is string[] => {
 
 export const getFigmaExport = async ({accessToken, fileKey, ids = [], exportType}: Props): Promise<FigmaExport[]> => {
 
-    console.log("Start fetching diagrams from Figma" + exportType);
+    console.log("Start fetching diagrams from Figma : " + exportType);
 
     const api = new Api({
         personalAccessToken: accessToken
@@ -45,17 +45,17 @@ export const getFigmaExport = async ({accessToken, fileKey, ids = [], exportType
                     throw new Error(`Unsupported export type: ${exportType}`)
                 }
 
-                const pdfResponse = await api.getImage(fileKey, {
+                const exportResponse = await api.getImage(fileKey, {
                     ids: ids,
                     format: exportType,
                     scale: 1
                 })
 
-                if (pdfResponse.err) {
-                    throw new Error(pdfResponse.err)
+                if (exportResponse.err) {
+                    throw new Error(exportResponse.err)
                 }
 
-                const pages = Object.values(pdfResponse.images)
+                const pages = Object.values(exportResponse.images)
 
                 if (!pagesAreOk(pages)) {
                     throw new Error('Found empty pages!')

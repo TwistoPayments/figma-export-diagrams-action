@@ -51,7 +51,7 @@ export async function run({accessToken, fileKey, ids, outDir, exportType}: Optio
 
         mkdirSync(path.dirname(pdfFilepath), {recursive: true})
 
-        core.info(pdfBasename)
+        //core.info(pdfBasename)
 
         // compare case-insensitive export type with PDF or PNG
         if (exportType.toLowerCase() === "pdf") {
