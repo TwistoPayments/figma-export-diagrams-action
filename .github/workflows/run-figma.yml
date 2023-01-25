@@ -1,0 +1,34 @@
+name: From Figma
+
+on:
+  workflow_dispatch:
+
+jobs:
+  export-locally:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Figma Export PDFs 🦾
+        id: figmaExportPdfs
+        uses: ./
+        with:
+          accessToken: ${{ secrets.FIGMA_TOKEN }}
+          fileKey: 'VQxKo2pnaksjE7Vql999Qv'
+
+      - name: Log ℹ️
+        run: |
+          echo "Results"
+          echo "pdfs: $pdfs"
+          echo "outDir: $outDir"
+        env:
+          pdfs: ${{ steps.figmaExportPdfs.outputs.pdfs }}
+          outDir: ${{ steps.figmaExportPdfs.outputs.outDir }}
+
+      - name: Upload artifact 📂
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-pdfs
+          path: ${{ steps.figmaExportPdfs.outputs.outDir }}
