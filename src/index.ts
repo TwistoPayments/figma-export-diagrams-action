@@ -47,7 +47,8 @@ const ids = jsonParse<string[]>(core.getInput('ids', {required: false}) || '[]')
     if (pdfs.length === 0) {
         core.warning('No Diagrams has been exported.')
     }
-
+    console.log(pdfs);
     core.setOutput('pdfs', pdfs);
+    console.log(distFolder);
     core.setOutput('outDir', `./${distFolder}/`)
 })()
