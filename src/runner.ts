@@ -50,7 +50,6 @@ export async function run({accessToken, fileKey, ids, outDir, exportType}: Optio
         const pdfBasename = path.basename(pdfFilename)
 
         mkdirSync(path.dirname(pdfFilepath), {recursive: true})
-
         //core.info(pdfBasename)
 
         // compare case-insensitive export type with PDF or PNG
