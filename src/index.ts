@@ -39,7 +39,6 @@ const ids = jsonParse<string[]>(core.getInput('ids', { required: false }) || '[]
 
     core.startGroup('Export diagrams')
     const pdfs = await run({ accessToken, fileKey, ids, outDir, exportType })
-    console.log("End group");
     core.endGroup()
 
     mkdirSync(path.resolve(outDir), { recursive: true })
@@ -47,8 +46,6 @@ const ids = jsonParse<string[]>(core.getInput('ids', { required: false }) || '[]
     if (pdfs.length === 0) {
         core.warning('No Diagrams has been exported.')
     }
-    console.log(pdfs);
     core.setOutput('pdfs', pdfs);
-    console.log(distFolder);
     core.setOutput('outDir', `./${distFolder}/`)
 })()
