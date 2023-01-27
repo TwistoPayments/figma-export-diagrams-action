@@ -52,6 +52,8 @@ export async function run({accessToken, fileKey, ids, outDir, exportType}: Optio
         mkdirSync(path.dirname(pdfFilepath), {recursive: true})
         //core.info(pdfBasename)
 
+        writeFileSync(path.resolve(outDir, coverFilename), cover)
+
         // compare case-insensitive export type with PDF or PNG
         if (exportType.toLowerCase() === "pdf") {
             const pdfMerger = new PDFMerger();
@@ -71,7 +73,6 @@ export async function run({accessToken, fileKey, ids, outDir, exportType}: Optio
             throw new Error(`Unsupported export type: ${exportType}`)
         }
 
-        writeFileSync(path.resolve(outDir, coverFilename), cover)
 
         result.push({
             id: diagram.id,

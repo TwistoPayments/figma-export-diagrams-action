@@ -1,8 +1,8 @@
 import * as core from '@actions/core'
-import {mkdirSync} from 'fs'
+import { mkdirSync } from 'fs'
 import path from 'path'
 
-import {run} from './runner'
+import { run } from './runner'
 
 const distFolder = 'dist'
 const [_bin, _sourcePath, outDir = path.resolve(__dirname, '..', distFolder)] = process.argv
@@ -19,10 +19,10 @@ const jsonParse = <T>(text: string): T | false => {
     }
 }
 
-const accessToken = core.getInput('accessToken', {required: true})
-const fileKey = core.getInput('fileKey', {required: true})
-const exportType = core.getInput('exportType', {required: true}).toLowerCase()
-const ids = jsonParse<string[]>(core.getInput('ids', {required: false}) || '[]')
+const accessToken = core.getInput('accessToken', { required: true })
+const fileKey = core.getInput('fileKey', { required: true })
+const exportType = core.getInput('exportType', { required: true }).toLowerCase()
+const ids = jsonParse<string[]>(core.getInput('ids', { required: false }) || '[]')
 
 ;(async function() {
 
