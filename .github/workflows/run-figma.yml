@@ -1,4 +1,4 @@
-name: From Figma
+name: Export diagrams from Figma
 
 on:
   workflow_dispatch:
@@ -11,12 +11,14 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
 
-      - name: Figma Export PDFs 🦾
-        id: figmaExportPdfs
-        uses: ./
+      - name: Figma Export Diagrams 🦾
+        id: figmaExportDiagrams
+        uses: TwistoPayments/figma-export-diagrams-action@develop
         with:
           accessToken: ${{ secrets.FIGMA_TOKEN }}
-          fileKey: 'VQxKo2pnaksjE7Vql999Qv'
+          # fileKey: 'VQxKo2pnaksjE7Vql999Qv' #test
+          exportType: 'png'
+          fileKey: 'ga9i42RTG3E2OxHNj2uJox'   # twisto
 
       - name: Log ℹ️
         run: |
@@ -24,11 +26,11 @@ jobs:
           echo "pdfs: $pdfs"
           echo "outDir: $outDir"
         env:
-          pdfs: ${{ steps.figmaExportPdfs.outputs.pdfs }}
-          outDir: ${{ steps.figmaExportPdfs.outputs.outDir }}
+          pdfs: ${{ steps.figmaExportDiagrams.outputs.pdfs }}
+          outDir: ${{ steps.figmaExportDiagrams.outputs.outDir }}
 
       - name: Upload artifact 📂
         uses: actions/upload-artifact@v3
         with:
           name: my-pdfs
-          path: ${{ steps.figmaExportPdfs.outputs.outDir }}
+          path: ${{ steps.figmaExportDiagrams.outputs.outDir }}
