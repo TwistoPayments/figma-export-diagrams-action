@@ -1,6 +1,8 @@
-# Figma Export PDFs action
+# Figma Export Diagrams action
 
-This action is able to export content from a Figma file as PDF.
+This action is a for from [Figma Export](https://github.com/marcomontalbano/figma-export) and it's extended to export diagrams from Figma using another formats such as PNG, JPG and SVG.
+
+This action is able to export content from a Figma file as PDF, PNG, JPG and SVG.
 Then you can save the pdf as workflow artifact, upload it to an ftp server, or do whatever you want.
 
 ## Figma file structure
@@ -27,38 +29,40 @@ You can take a look at [this example](https://www.figma.com/file/VQxKo2pnaksjE7V
 ## Usage
 
 ```yml
-- name: Figma Export PDFs
-  id: figmaExportPdfs
-  uses: marcomontalbano/figma-export-pdfs-action@v1.2.2
+- name: Figma Export Diagrams
+  id: figmaExportDiagrams
+  uses: TwistoPayments/figma-export-diagrams-action@develop
   with:
     accessToken: ${{ secrets.FIGMA_ACCESS_TOKEN }}
     fileKey: VQxKo2pnaksjE7Vql999Qv
     ids: ["120:3","138:28"]
+    exportType: 'png'
 
 - name: Log
   echo "pdfs: $pdfs"
   echo "outDir: $outDir"
   env:
-    pdfs: ${{ steps.figmaExportPdfs.outputs.pdfs }}
-    outDir: ${{ steps.figmaExportPdfs.outputs.outDir }}
+    pdfs: ${{ steps.figmaExportDiagrams.outputs.pdfs }}
+    outDir: ${{ steps.figmaExportDiagrams.outputs.outDir }}
 ```
 
-Checkout a working example [`dispatch.yaml`](.github/workflows/dispatch.yaml).
+Checkout a working example [`dispatch.yaml`](.github/workflows/run-figma.aml).
 
 ### Inputs
 
-| Key           | Required | Description                               | Example                                    | Default |
-|---------------|:--------:|-------------------------------------------|--------------------------------------------|:-------:|
-| `accessToken` |  **yes** | Figma access token                        | xxxxx-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx |         |
-| `fileKey`     |  **yes** | Figma file key                            | rAJHsSg4SC5NqFIFib5NWz                     |         |
-| `ids`         |    no    | List of ids to export. Default to *all*   | ["17:786", "6:786"]                        |   [ ]   |
+| Key           |   Required   | Description                              | Example                                    | Default |
+|---------------|:------------:|------------------------------------------|--------------------------------------------|:-------:|
+| `accessToken` |   **yes**    | Figma access token                       | xxxxx-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx |         |
+| `fileKey`     |   **yes**    | Figma file key                           | rAJHsSg4SC5NqFIFib5NWz                     |         |
+| `ids`         |      no      | List of ids to export. Default to *all*  | ["17:786", "6:786"]                        |   [ ]   |
+| `exportType`  |   **yes**    | Export type format (pdf, png, svg, jpg) | 'PNG'                                      |         |
 
 
 ### Outputs
 
 | Key      | Description                                | Example |
 |----------|--------------------------------------------|---------|
-| `pdfs`   | List of exported pdfs                      | *       |
+| `pdfs`   | List of exported diagrams                  | *       |
 | `outDir` | Output directory for all emitted pdf files | ./dist/ |
 
 > **\*** For example a `pdfs` could looks like the following:
@@ -94,3 +98,15 @@ What do you think about exporting Figma content as PDF to an FTP Server, just cl
 Take a look at this [workflow](.github/workflows/from-figma.yaml) and find out how this is totally feasible. Just clone the workflow and setup [this Figma plugin](https://www.figma.com/community/plugin/1096890502176164513) 😉
 
 ![Demo](https://raw.githubusercontent.com/marcomontalbano/figma-plugin-run-github-actions-workflows/main/cover.gif)
+
+## Run this action locally for development
+
+***Prerequisites***:
+Install act:
+- Mac OS - `brew install act`
+- Windows - `choco install act`
+- Linux - `sudo snap install act`
+
+```sh
+act -j export-locally --secret-file my.secrets --container-architecture linux/amd64 --rebuild
+```

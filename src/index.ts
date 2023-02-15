@@ -1,8 +1,8 @@
 import * as core from '@actions/core'
-import {mkdirSync} from 'fs'
+import { mkdirSync } from 'fs'
 import path from 'path'
 
-import {run} from './runner'
+import { run } from './runner'
 
 const distFolder = 'dist'
 const [_bin, _sourcePath, outDir = path.resolve(__dirname, '..', distFolder)] = process.argv
@@ -19,12 +19,12 @@ const jsonParse = <T>(text: string): T | false => {
     }
 }
 
-const accessToken = core.getInput('accessToken', {required: true})
-const fileKey = core.getInput('fileKey', {required: true})
-const exportType = core.getInput('exportType', {required: true}).toLowerCase()
-const ids = jsonParse<string[]>(core.getInput('ids', {required: false}) || '[]')
+const accessToken = core.getInput('accessToken', { required: true })
+const fileKey = core.getInput('fileKey', { required: true })
+const exportType = core.getInput('exportType', { required: true }).toLowerCase()
+const ids = jsonParse<string[]>(core.getInput('ids', { required: false }) || '[]')
 
-;(async function () {
+;(async function() {
 
     if (ids === false) {
         core.setFailed('"ids" must be a stringified array of strings.')
@@ -38,16 +38,14 @@ const ids = jsonParse<string[]>(core.getInput('ids', {required: false}) || '[]')
     }
 
     core.startGroup('Export diagrams')
-    const pdfs = await run({accessToken, fileKey, ids, outDir, exportType})
-    console.log("End group");
+    const diagrams = await run({ accessToken, fileKey, ids, outDir, exportType })
     core.endGroup()
 
-    mkdirSync(path.resolve(outDir), {recursive: true})
+    mkdirSync(path.resolve(outDir), { recursive: true })
 
-    if (pdfs.length === 0) {
+    if (diagrams.length === 0) {
         core.warning('No Diagrams has been exported.')
     }
-
-    core.setOutput('pdfs', pdfs);
+    core.setOutput('diagrams', diagrams);
     core.setOutput('outDir', `./${distFolder}/`)
 })()

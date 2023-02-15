@@ -52,6 +52,8 @@ export async function run({accessToken, fileKey, ids, outDir, exportType}: Optio
         mkdirSync(path.dirname(pdfFilepath), {recursive: true})
         //core.info(pdfBasename)
 
+        writeFileSync(path.resolve(outDir, coverFilename), cover)
+
         // compare case-insensitive export type with PDF or PNG
         if (exportType.toLowerCase() === "pdf") {
             const pdfMerger = new PDFMerger();
@@ -59,27 +61,34 @@ export async function run({accessToken, fileKey, ids, outDir, exportType}: Optio
                 await pdfMerger.add(page)
             }
             await pdfMerger.save(path.resolve(outDir, pdfFilename))
-        } else if (exportType.toLowerCase() === "png") {
-            let pngFileCount = 0
+            result.push({
+                id: diagram.id,
+                name: path.basename(diagram.name),
+                basename: pdfBasename,
+                filepath: `.${sep}${path.join(path.basename(outDir), pdfFilename)}`,
+                cover: `.${sep}${path.join(path.basename(outDir), coverFilename)}`,
+            })
+        } else if (exportType.toLowerCase() === "png"
+            || exportType.toLowerCase() === "jpg"
+            || exportType.toLowerCase() === "svg") {
+            let imageFileCount = 0
             for (const page of pages) {
-                let pngFileName = `${diagram.name}_${pngFileCount}.png`
-                console.log(pngFileName);
-                writeFileSync(path.resolve(outDir, pngFileName), page)
-                pngFileCount = pngFileCount + 1
+                let imageFileName = `${diagram.name}_${imageFileCount}.${exportType.toLowerCase()}`
+                console.log(imageFileName);
+                writeFileSync(path.resolve(outDir, imageFileName), page)
+                imageFileCount = imageFileCount + 1
+                result.push({
+                    id: diagram.id,
+                    name: path.basename(diagram.name),
+                    basename: pdfBasename,
+                    filepath: `.${sep}${path.join(path.basename(outDir), imageFileName)}`,
+                    cover: `.${sep}${path.join(path.basename(outDir), coverFilename)}`,
+                })
             }
         } else {
             throw new Error(`Unsupported export type: ${exportType}`)
         }
 
-        writeFileSync(path.resolve(outDir, coverFilename), cover)
-
-        result.push({
-            id: diagram.id,
-            name: path.basename(diagram.name),
-            basename: pdfBasename,
-            filepath: `.${sep}${path.join(path.basename(outDir), pdfFilename)}`,
-            cover: `.${sep}${path.join(path.basename(outDir), coverFilename)}`,
-        })
     }
 
     return result
