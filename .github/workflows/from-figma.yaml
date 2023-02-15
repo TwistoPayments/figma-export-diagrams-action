@@ -34,9 +34,9 @@ jobs:
           page: ${{ github.event.inputs.page }}
           selection: ${{ github.event.inputs.selection }}
 
-      - name: Figma Export PDFs 🦾
-        id: figmaExportPdfs
-        uses: ./
+      - name: Figma Export Diagrams 🦾
+        id: figmaExportDiagrams
+        uses: TwistoPayments/figma-export-diagrams-action@develop
         with:
           accessToken: ${{ secrets.FIGMA_ACCESS_TOKEN }}
           fileKey: ${{ steps.transformInputs.outputs.fileKey }}
@@ -45,11 +45,11 @@ jobs:
       - name: Log ℹ️
         run: |
           echo "Results"
-          echo "pdfs: $pdfs"
+          echo "diagrams: $diagrams"
           echo "outDir: $outDir"
         env:
-          pdfs: ${{ steps.figmaExportPdfs.outputs.pdfs }}
-          outDir: ${{ steps.figmaExportPdfs.outputs.outDir }}
+          pdfs: ${{ steps.figmaExportDiagrams.outputs.pdfs }}
+          outDir: ${{ steps.figmaExportDiagrams.outputs.outDir }}
 
       - name: Upload 📂
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
@@ -57,5 +57,5 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ${{ steps.figmaExportPdfs.outputs.outDir }}
+          local-dir: ${{ steps.figmaExportDiagrams.outputs.outDir }}
           server-dir: ./pdf-test/

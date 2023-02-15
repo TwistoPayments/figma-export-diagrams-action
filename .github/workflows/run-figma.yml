@@ -23,7 +23,7 @@ jobs:
       - name: Log ℹ️
         run: |
           echo "Results"
-          echo "pdfs: $pdfs"
+          echo "diagrams: $diagramss"
           echo "outDir: $outDir"
         env:
           pdfs: ${{ steps.figmaExportDiagrams.outputs.pdfs }}

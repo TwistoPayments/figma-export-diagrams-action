@@ -38,14 +38,14 @@ const ids = jsonParse<string[]>(core.getInput('ids', { required: false }) || '[]
     }
 
     core.startGroup('Export diagrams')
-    const pdfs = await run({ accessToken, fileKey, ids, outDir, exportType })
+    const diagrams = await run({ accessToken, fileKey, ids, outDir, exportType })
     core.endGroup()
 
     mkdirSync(path.resolve(outDir), { recursive: true })
 
-    if (pdfs.length === 0) {
+    if (diagrams.length === 0) {
         core.warning('No Diagrams has been exported.')
     }
-    core.setOutput('pdfs', pdfs);
+    core.setOutput('diagrams', diagrams);
     core.setOutput('outDir', `./${distFolder}/`)
 })()

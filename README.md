@@ -98,3 +98,15 @@ What do you think about exporting Figma content as PDF to an FTP Server, just cl
 Take a look at this [workflow](.github/workflows/from-figma.yaml) and find out how this is totally feasible. Just clone the workflow and setup [this Figma plugin](https://www.figma.com/community/plugin/1096890502176164513) 😉
 
 ![Demo](https://raw.githubusercontent.com/marcomontalbano/figma-plugin-run-github-actions-workflows/main/cover.gif)
+
+## Run this action locally for development
+
+***Prerequisites***:
+Install act:
+- Mac OS - `brew install act`
+- Windows - `choco install act`
+- Linux - `sudo snap install act`
+
+```sh
+act -j export-locally --secret-file my.secrets --container-architecture linux/amd64 --rebuild
+```
